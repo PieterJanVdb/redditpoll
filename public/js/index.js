@@ -33,13 +33,11 @@ $('.generate-result').submit(function (event) {
      data: $form.serialize(),
   })
     .done(function (data) {
-      document.cookie = 'result=' + JSON.stringify(data.result);
-
       $generateResultButton.prop('disabled', false);
       generateResultCard.hide(300);
       infoCard.hide(300);
       downloadCSVCard.show(300);
-      fillUnprocessedIds(data.unparsedIds);
+      fillUnprocessedIds(data);
     })
     .fail(function (err) {
       $generateResultError.text(err.responseText);
@@ -67,4 +65,15 @@ var fillUnprocessedIds = function fillUnprocessedIds (ids) {
   });
 
   $unprocessedIds.show(500);
-}
+};
+
+var deleteCookies = function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+    	var cookie = cookies[i];
+    	var eqPos = cookie.indexOf("=");
+    	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    	document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+};

@@ -1,6 +1,8 @@
 const Express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const redis   = require("redis");
+const session = require('express-session');
+const redisStore = require('connect-redis')(session);
 const snoowrap = require('snoowrap');
 const htmlparser = require("htmlparser2");
 const levenshtein = require('fast-levenshtein');
@@ -9,10 +11,18 @@ const Entities = require('html-entities').AllHtmlEntities;
 
 const app = new Express();
 const entities = new Entities();
+const client  = redis.createClient();
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl: 86400}),
+    saveUninitialized: false,
+    resave: false
+}));
 
 app.use(Express.static('public'));
 
@@ -81,7 +91,7 @@ app.post('/generate_result', (req, res) => {
     trimmedTrackLists.forEach(list => {
       list.forEach((t, idx) => {
         const weight = limit - idx;
-        let track = t.trimRight().toLowerCase();
+        let track = t.trimRight().trimLeft().toLowerCase();
 
         if (track.indexOf('\n') > -1) {
           const splittedTrack = track.split('\n');
@@ -120,33 +130,31 @@ app.post('/generate_result', (req, res) => {
 
     const unparsedIds = unparsedComments.map(uc => uc.id);
 
-    return res.status(200).json({
-      result: sortedResult,
-      unparsedIds: unparsedIds,
-    });
+    req.session.result = sortedResult;
+
+    return res.status(200).json(unparsedIds);
   });
 });
 
 app.get('/download_csv', (req, res) => {
-  const resultCookie = req.cookies.result;
-  let result;
+  const result = req.session.result;
 
-  try {
-    result = JSON.parse(resultCookie);
-  } catch (e) {
-    return res.status(400).send('Please provide a valid cookie.');
-  }
+  return req.session.destroy(function(err){
+    if(err){
+        return res.status(500).send('Something went wrong.');
+    } else {
+      if (!result) return res.status(400).send('No result session available.');
 
-  if (!result) return res.status(400).send('Please provide the result.');
+      stringify(result, (err, data) => {
+        if (err) {
+          return res.status(404).send('Failed converting result to CSV.');
+        }
 
-  stringify(result, (err, data) => {
-    if (err) {
-      return res.status(404).send('Failed converting result to CSV.');
+        res.setHeader('Content-Disposition', 'attachment; filename=result.csv');
+        res.set('Content-Type', 'text/csv');
+        return res.status(200).send(data);
+      });
     }
-
-    res.setHeader('Content-Disposition', 'attachment; filename=result.csv');
-    res.set('Content-Type', 'text/csv');
-    return res.status(200).send(data);
   });
 });
 
