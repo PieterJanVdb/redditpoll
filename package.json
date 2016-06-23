@@ -1,5 +1,5 @@
 {
-  "name": "redditpoll",
+  "name": "snoopoll",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,9 +13,9 @@
   "author": "Pieter-Jan Vandenbussche",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PieterJanVdb/redditpoll/issues"
+    "url": "https://github.com/PieterJanVdb/snoopoll/issues"
   },
-  "homepage": "https://github.com/PieterJanVdb/redditpoll#readme",
+  "homepage": "https://github.com/PieterJanVdb/snoopoll#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",

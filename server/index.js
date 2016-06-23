@@ -42,7 +42,7 @@ app.post('/generate_result', (req, res) => {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
     refresh_token: process.env.REFRESH_TOKEN,
-    user_agent: 'u/Piegie @RedditPoll:1.0.0'
+    user_agent: 'u/Piegie @SnooPoll:1.0.0'
   });
 
   const parser = new htmlparser.Parser({
