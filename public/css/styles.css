@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #455A64;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.app {
+  width: 40%;
+  margin: 0 auto;
+}
+
+.header {
+  cursor: pointer;
+  margin-top: 50px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.full-btn {
+  width: 100%;
+}
+
+.card {
+  margin-bottom: 25px;
+}
+
+.generate-result-error {
+  margin-top: 15px !important;
+  color: #CC0000 !important;
+  text-align: center;
+}
+
+.download-csv-card {
+  display: none;
+}
+
+.download-csv-description {
+  text-align: justify;
+}
+
+.download-csv-button {
+  margin-top: 20px !important;
+}
+
+.unprocessed-ids {
+  margin-top: 25px;
+  display: none;
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.unprocessed-ids li {
+  font-size: 14px;
+}

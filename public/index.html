@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="css/normalize.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link type="text/css" rel="stylesheet" href="css/styles.css">
+    <title>Reddit Poll To CSV</title>
+  </head>
+  <body>
+    <div class="app">
+      <h2 class="header">Convert Reddit Polls To CSV</h2>
+      <div class="card blue-grey darken-1 info-card">
+        <div class="card-content white-text">
+          <span class="card-title">Important!</span>
+          <p>The comments have to be formatted in a numbered list to be properly processed, eg.:</p>
+          <ol>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card generate-result-card">
+        <div class="card-content">
+          <form class="col s12 generate-result">
+            <div class="row">
+              <!--<span></span>-->
+              <div class="input-field col s12">
+                <input placeholder="The id of the Reddit post (max 6 characters)." type="text" name='postId' id="postid" pattern="^[a-zA-Z0-9]{6}$" required>
+                <label for="postId">PostId</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="limit" class="limit-select" required>
+                </select>
+                <label>Limit (the amount of items to be processed per comment)</label>
+              </div>
+            </div>
+            <button class="btn waves-effect waves-light full-btn generate-result-button" type="submit" name="action">Generate result</button>
+            <p class="generate-result-error" ></p>
+          </form>
+        </div>
+      </div>
+      <div class="card download-csv-card">
+        <div class="card-content">
+          <p class="download-csv-description">The following comments could not be processed. They can be accessed by adding the id to the end of the URL for the Reddit post in the address bar.</p>
+          <ul class="unprocessed-ids"></ul>
+          <button class="btn waves-effect waves-light full-btn download-csv-button">Download CSV</button>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+  </body>
+</html>
