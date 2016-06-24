@@ -13,7 +13,6 @@ const app = new Express();
 const entities = new Entities();
 const client  = redis.createClient();
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -133,7 +132,8 @@ app.post('/generate_result', (req, res) => {
     req.session.result = sortedResult;
 
     return res.status(200).json(unparsedIds);
-  });
+  })
+  .catch(err => res.status(404).send('Please provide a valid Post Id.'));
 });
 
 app.get('/download_csv', (req, res) => {
