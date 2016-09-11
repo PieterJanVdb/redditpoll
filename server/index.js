@@ -75,7 +75,6 @@ app.post('/generate_result', (req, res) => {
   }, {decodeEntities: false});
 
   r.getSubmission(post).expandReplies({ depth: 1 }).comments.then(comments => {
-    console.log(comments.length);
     comments.forEach(c => {
       if (c.body_html.indexOf('<ol>') === -1) {
         unparsedComments.push(c);
