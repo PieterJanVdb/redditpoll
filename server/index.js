@@ -74,7 +74,8 @@ app.post('/generate_result', (req, res) => {
       }
   }, {decodeEntities: false});
 
-  r.get_submission(post).comments.then(comments => {
+  r.getSubmission(post).expandReplies({ depth: 1 }).comments.then(comments => {
+    console.log(comments.length);
     comments.forEach(c => {
       if (c.body_html.indexOf('<ol>') === -1) {
         unparsedComments.push(c);
@@ -133,7 +134,10 @@ app.post('/generate_result', (req, res) => {
 
     return res.status(200).json(unparsedIds);
   })
-  .catch(err => res.status(404).send('Please provide a valid Post Id.'));
+  .catch(err => {
+    console.log(err);
+    return res.status(404).send('Please provide a valid Post Id.');
+  });
 });
 
 app.get('/download_csv', (req, res) => {
